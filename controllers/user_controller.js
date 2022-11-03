@@ -4,47 +4,31 @@ const jwt = require("jsonwebtoken");
 
 //// Register User  
 const register = (req, res) => {
-    let newUser = new User(req.body);
-    newUser.password = bcrypt.hashSync(req.body.password, 10);
+    let newUser = new User(req.body)
 
-    console.log(newUser);
+    if(newUser.password.length >= 8){
+        newUser.password = bcrypt.hashSync(req.body.password, 10)
+    }
 
+    console.log(newUser)
+    //save user to db
     newUser.save((err, user) => {
-        if(err){
-            return res.status(400).json({
-                msg: err
-            });
+        if(err) {
+            return res.status(422).send({
+                message: err
+            })
+        } else {
+            //create token
+            res.json({
+                token: jwt.sign({
+                    name: user.name,
+                    email: user.email,
+                    _id: user._id
+                }, 'advjs_project01'),
+                user
+            })
         }
-        else {
-            user.password = undefined;
-            return res.status(201).json(user);
-        }
-    });
-    // let newUser = new User(req.body)
-
-    // if(newUser.password.length >= 8){
-    //     newUser.password = bcrypt.hashSync(req.body.password, 10)
-    // }
-
-    // console.log(newUser)
-    // //save user to db
-    // newUser.save((err, user) => {
-    //     if(err) {
-    //         return res.status(422).send({
-    //             message: err
-    //         })
-    //     } else {
-    //         //create token
-    //         res.json({
-    //             token: jwt.sign({
-    //                 name: user.name,
-    //                 email: user.email,
-    //                 _id: user._id
-    //             }, 'advjs_project01'),
-    //             user
-    //         })
-    //     }
-    // })
+    })
 }
 
 //// Login User
