@@ -96,9 +96,39 @@ const removeJob = (req,res) => {
     })
 }
 
+const viewOne = (req,res) => {
+    // to get the ID you need to access the id from the request. to do this create a variable and put it in there
+    let id = req.params.id;
+
+    // connect to db and retrieve festival with :id
+    Job.findById(id)
+    .then((data) => {
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({
+                "message": `Jjob with ID: ${id} was not found`
+            });
+        }
+    })
+
+    // error handling 
+    .catch((err) => {
+        if (err.name === 'CastError') {
+            res.status(404).json({
+                "message": `Bad Request. ${id} is not a valid ID`
+            });
+        }
+        else {
+            res.status(500).json(err);
+        }
+    })
+}
+
 module.exports = {
     newJob,
     allJobs,
     updateJob,
-    removeJob
+    removeJob,
+    viewOne
 }

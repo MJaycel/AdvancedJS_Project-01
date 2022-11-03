@@ -8,13 +8,15 @@ const {
     allJobs,
     updateJob,
     removeJob,
+    viewOne
   } = require('../controllers/job_controller');
 
 router
     .post('/add', loginRequired, newJob)
     .get('/all', allJobs)
-    .put('/update/:id', updateJob)
-    .delete('/remove/:id', removeJob)
+    .put('/update/:id', loginRequired, updateJob)
+    .delete('/remove/:id', loginRequired, removeJob)
+    .get('/view/:id', loginRequired, viewOne)
 
 
 module.exports = router;
