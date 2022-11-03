@@ -18,15 +18,8 @@ const register = (req, res) => {
                 message: err
             })
         } else {
-            //create token
-            res.json({
-                token: jwt.sign({
-                    name: user.name,
-                    email: user.email,
-                    _id: user._id
-                }, 'advjs_project01'),
-                user
-            })
+            user.password = undefined; // password gets deleted from client. doesnt affect the DB version of User
+            return res.status(201).json(user);
         }
     })
 }
