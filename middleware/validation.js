@@ -16,4 +16,11 @@ const verifyToken = (req,res,next)=> {
     }
 }
 
-module.exports = {verifyToken}
+// checks to see if the user is valid
+const validateUser = (req,res,next) => {
+    console.log("USER: ")
+    console.log(req.user);
+    next();
+}
+
+module.exports = {verifyToken, validateUser}
