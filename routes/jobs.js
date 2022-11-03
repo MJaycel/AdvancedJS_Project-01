@@ -7,12 +7,14 @@ const {
     newJob,
     allJobs,
     updateJob,
-    
+    removeJob,
   } = require('../controllers/job_controller');
 
 router
     .post('/add', loginRequired, newJob)
     .get('/all', allJobs)
     .put('/update/:id', updateJob)
+    .delete('/remove/:id', removeJob)
+
 
 module.exports = router;

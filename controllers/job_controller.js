@@ -67,8 +67,38 @@ const updateJob = (req,res) => {
     });
 }
 
+const removeJob = (req,res) => {
+    let id = req.params.id;
+
+    Job.findByIdAndRemove({_id: id})
+    .then((data) => {
+        if (data) {
+            res.status(200).json({
+                "message": `Job with ID: ${id} was deleted sucessfully`
+            });
+        } else {
+            res.status(404).json({
+                "message": `Job with ID: ${id} was not found`
+            });
+        }
+    })
+    // error handling 
+    .catch((err) => {
+        if (err.name === 'CastError') {
+            res.status(404).json({
+                "message": `Bad Request. ${id} is not a valid ID`
+            });
+        }
+        else {
+            res.status(500).json(err)
+        }
+
+    })
+}
+
 module.exports = {
     newJob,
     allJobs,
-    updateJob
+    updateJob,
+    removeJob
 }
