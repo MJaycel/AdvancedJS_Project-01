@@ -5,6 +5,8 @@ require('dotenv').config()
 const connect = require('./utils/db.js');
 const Job = require('./models/jobs_schema.js');
 const Area = require('./models/jobAreas_schema.js');
+const User = require('./models/user_schema.js')
+const bcrypt = require('bcryptjs');
 
 
 
@@ -17,6 +19,14 @@ async function seedDb() {
         /// Delete all existing data
         await Job.deleteMany({});
         await Area.deleteMany({});
+        await User.deleteMany({});
+
+        ///Create admin account
+        const user = new User()
+        user.name = "Admin"
+        user.email = "admin@jobs.ie"
+        user.password = bcrypt.hashSync("victoriaSecret", 10)
+        user.save()
 
         /// Creating job areas
         const jobAreas = [
