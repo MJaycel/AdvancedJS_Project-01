@@ -6,16 +6,27 @@ const connect = require('./utils/db.js');
 const Job = require('./models/jobs_schema.js');
 
 
-const numOfJobs = 10;
+const numOfJobs = 15;
 const numOfPara = Math.floor(Math.random() * 8) + 4;
 async function seedDb() {
     try {
         await connect();
 
-        Job.deleteMany();
+        await Job.deleteMany({});
 
         for (let i = 0; i < numOfJobs; i++) {
             // const fullName = faker.name.fullName();
+            var responsibilites = [];
+            for(let j = 0; j < Math.floor(Math.random() * 10) + 3; j++){
+                var resp = faker.lorem.sentence();
+                responsibilites.push(resp)
+            }
+
+            var qualifications = []
+            for(let k = 0; k < Math.floor(Math.random() * 8) + 3; k++){
+                var quals = faker.lorem.sentence();
+                qualifications.push(quals)
+            }
 
             const job = new Job();
             job.jobTitle = faker.name.jobTitle();
@@ -23,8 +34,8 @@ async function seedDb() {
             job.location = `${faker.address.county()}, ${faker.address.country()} `;
             job.salary = faker.finance.amount(10, 25, 2, '€');
             job.roleDesc = faker.lorem.paragraphs(numOfPara);
-            job.responsibilites = faker.lorem.sentence(Math.floor(Math.random() * 10) + 2)
-            job.qualifications = faker.lorem.sentence(Math.floor(Math.random() * 10) + 2)
+            job.responsibilites = responsibilites
+            job.qualifications = qualifications
             job.save()
         }
     }
