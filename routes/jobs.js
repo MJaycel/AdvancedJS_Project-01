@@ -8,7 +8,8 @@ const {
     allJobs,
     updateJob,
     removeJob,
-    viewOne
+    viewOne,
+    getAllInArea,
   } = require('../controllers/job_controller');
 
 router
@@ -17,6 +18,7 @@ router
     .put('/update/:id', loginRequired, updateJob)
     .delete('/remove/:id', loginRequired, removeJob)
     .get('/view/:id', loginRequired, viewOne)
+    .get('/view/all/area/:areaId', loginRequired, getAllInArea)
 
 
 module.exports = router;

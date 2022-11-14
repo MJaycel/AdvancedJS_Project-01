@@ -4,8 +4,12 @@ const jobSchema = new Schema({
     jobTitle: {
         type: String
     },
-    jobArea: {
+    jobType: {
         type: String
+    },
+    jobArea: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'jobArea'
     },
     location: {
         type: String
